@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package example;
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string created_at = 4;
+}
+
+message UserRequest {
+  string user_id = 1;
+}
+
+message UserResponse {
+  User user = 1;
+}
+
+message UsersResponse {
+  repeated User users = 1;
+}
+
+message Post {
+  int32 id = 1;
+  string user_id = 2;
+  string content = 3;
+  int32 likes_count = 4;
+  string created_at = 5;
+}
+
+message PostRequest {
+  string user_id = 1;
+  string content = 2;
+}
+
+message PostResponse {
+  Post post = 1;
+}
+
+message PostsRequest {
+  string user_id = 1;
+}
+
+message PostsResponse {
+  repeated Post posts = 1;
+}
+
+message LikeRequest {
+  int32 post_id = 1;
+  string user_id = 2;
+}
+
+message LikeResponse {
+  bool success = 1;
+  int32 new_likes_count = 2;
+}
+
+service UserService {
+  rpc CreateUser (User) returns (UserResponse);
+  rpc GetUser (UserRequest) returns (UserResponse);
+}
+
+service PostService {
+  rpc CreatePost (PostRequest) returns (PostResponse);
+  rpc GetPost (PostRequest) returns (PostResponse);
+  rpc GetPosts (PostsRequest) returns (PostsResponse);
+}
+
+service LikeService {
+  rpc LikePost (LikeRequest) returns (LikeResponse);
+}

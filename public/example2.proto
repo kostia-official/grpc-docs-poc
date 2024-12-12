@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package game;
+
+message Player {
+  int32 id = 1;
+  string name = 2;
+  float position_x = 3;
+  float position_y = 4;
+  int32 score = 5;
+}
+
+message GameState {
+  repeated Player players = 1;
+  int32 round_number = 2;
+  string status = 3;
+}
+
+message PlayerCommand {
+  int32 player_id = 1;
+  string action = 2;
+  float value = 3;
+}
+
+message PlayerRegistration {
+  string name = 1;
+}
+
+message RegistrationResponse {
+  int32 player_id = 1;
+  string message = 2;
+}
+
+message UpdateScoreRequest {
+  int32 player_id = 1;
+  int32 score = 2;
+}
+
+message UpdateScoreResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message PlayerDisconnect {
+  int32 player_id = 1;
+}
+
+service GameService {
+  rpc RegisterPlayer (PlayerRegistration) returns (RegistrationResponse);
+  rpc SendCommand (PlayerCommand) returns (GameState);
+  rpc GetGameState (google.protobuf.Empty) returns (GameState);
+  rpc UpdateScore (UpdateScoreRequest) returns (UpdateScoreResponse);
+  rpc DisconnectPlayer (PlayerDisconnect) returns (google.protobuf.Empty);
+}
